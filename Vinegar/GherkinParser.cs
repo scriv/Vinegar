@@ -1,131 +1,167 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Vinegar
 {
 	public class GherkinParser
 	{
+		private readonly ISectionParser[] m_parsers;
+
 		public GherkinParser()
 		{
+			m_parsers = new ISectionParser[]
+			{ 
+				new CommentParser(), 
+				new TagParser(), 
+				new FeatureParser(), 
+				new ScenarioParser(), 
+				new StepParser(), 
+				new FreeTextParser()
+			};
 		}
 
 		public bool TryParse(string featureText, out Feature feature)
 		{
-			feature = new Feature();
-			var context = ParserContext.None;
+			var state = new ParsingState();
 			int lineIndex = 0;
-			List<string> tags = new List<string>();
-			StepType? lastStepType = null;
 
 			foreach (string line in featureText.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries))
 			{
-				try
+				string trimmedLine = line.TrimStart();
+
+				foreach (ISectionParser parser in m_parsers)
 				{
-					string trimmedLine = line.TrimStart();
+					bool parsed = false;
 
-					if (trimmedLine.StartsWith("#", StringComparison.OrdinalIgnoreCase))
+					foreach (string prefix in parser.LinePrefixes)
 					{
-						continue;
-					}
-
-					if (trimmedLine.StartsWith("@"))
-					{
-						tags.Clear();
-
-						foreach (string tag in trimmedLine.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries))
+						if (trimmedLine.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
 						{
-							tags.Add(tag.Trim());
+							parser.Parse(trimmedLine, state);
+							parsed = true;
+							break;
 						}
-
-						continue;
 					}
 
-					if (trimmedLine.StartsWith("Feature:", StringComparison.OrdinalIgnoreCase))
-					{
-						this.RequireContext(context, ParserContext.None, lineIndex, line);
-
-						feature.Title = line.Substring(line.IndexOf(":") + 1).Trim();
-						feature.Tags = tags;
-						context = ParserContext.Feature;
-
-					}
-					else if (trimmedLine.StartsWith("Scenario:", StringComparison.OrdinalIgnoreCase))
-					{
-						this.RequireContext(context, ParserContext.Feature, lineIndex, line);
-
-						Scenario scenario = new Scenario();
-						scenario.Tags = tags;
-						scenario.Title = line.Substring(line.IndexOf(":") + 1).Trim();
-
-						feature.Scenarios.Add(scenario);
-						context = ParserContext.Scenario;
-					}
-					else if (trimmedLine.StartsWith("Given", StringComparison.OrdinalIgnoreCase)
-						|| trimmedLine.StartsWith("When", StringComparison.OrdinalIgnoreCase)
-						|| trimmedLine.StartsWith("Then", StringComparison.OrdinalIgnoreCase))
-					{
-						tags.Clear();
-						this.RequireContext(context, ParserContext.Scenario, lineIndex, line);
-
-						int seperatorIndex = trimmedLine.IndexOf(' ');
-						StepType stepType = (StepType)Enum.Parse(typeof(StepType), trimmedLine.Substring(0, seperatorIndex), true);
-						Scenario scenario = feature.Scenarios[feature.Scenarios.Count - 1];
-
-						var step = new Step() { Type = stepType, Text = trimmedLine.Substring(seperatorIndex).Trim() };
-						scenario.Steps.Add(step);
-
-						lastStepType = stepType;
-					}
-					else if (trimmedLine.StartsWith("And", StringComparison.OrdinalIgnoreCase))
-					{
-						tags.Clear();
-						this.RequireContext(context, ParserContext.Scenario, lineIndex, line);
-
-						// TODO: Require existing step type
-
-						int seperatorIndex = trimmedLine.IndexOf(' ');
-						Scenario scenario = feature.Scenarios[feature.Scenarios.Count - 1];
-
-						var step = new Step() { Type = lastStepType.GetValueOrDefault(), Text = trimmedLine.Substring(seperatorIndex).Trim() };
-						scenario.Steps.Add(step);
-					}
-					else if (!string.IsNullOrWhiteSpace(trimmedLine))
-					{
-						tags.Clear();
-
-						if (!string.IsNullOrEmpty(feature.Description))
-						{
-							feature.Description += Environment.NewLine;
-						}
-
-						feature.Description += trimmedLine.TrimEnd();
-					}
+					if (parsed) break;
 				}
-				finally
-				{
-					lineIndex++;
-				}
+
+				lineIndex++;
 			}
 
+			feature = state.Feature;
 			return true;
 		}
 
-		private void RequireContext(ParserContext currentContext, ParserContext requiredContext, int line, string lineText)
+		private class ParsingState
 		{
-			if (currentContext != requiredContext)
+			public Feature Feature { get; set; }
+			public Scenario CurrentScenario { get; set; }
+			public Step CurrentStep { get; set; }
+			public IList<string> CurrentTags { get; set; }
+		}
+
+		private interface ISectionParser
+		{
+			string[] LinePrefixes { get; }
+			void Parse(string line, ParsingState parsingState);
+		}
+
+		private class FeatureParser : ISectionParser
+		{
+			public string[] LinePrefixes { get { return new[] { "Feature:" }; } }
+
+			public void Parse(string line, ParsingState parsingState)
 			{
-				throw new GherkinParserException(currentContext);
+				parsingState.Feature = new Feature();
+				parsingState.Feature.Title = line.Substring(line.IndexOf(":") + 1).Trim();
+				parsingState.Feature.Tags = parsingState.CurrentTags;
 			}
 		}
 
-		internal enum ParserContext
+		private class ScenarioParser : ISectionParser
 		{
-			None,
-			Feature,
-			Scenario
+			public string[] LinePrefixes { get { return new[] { "Scenario:" }; } }
+
+			public void Parse(string line, ParsingState parsingState)
+			{
+				Scenario scenario = new Scenario();
+				scenario.Tags = parsingState.CurrentTags;
+				scenario.Title = line.Substring(line.IndexOf(":") + 1).Trim();
+
+				parsingState.Feature.Scenarios.Add(scenario);
+				parsingState.CurrentScenario = scenario;
+			}
+		}
+
+		private class StepParser : ISectionParser
+		{
+			private const string andStepName = "And";
+
+			public string[] LinePrefixes { get { return new[] { "Given", "When", "Then", andStepName }; } }
+
+			public void Parse(string line, ParsingState parsingState)
+			{
+				int seperatorIndex = line.IndexOf(' ');
+				StepType stepType;
+
+				if (line.StartsWith(andStepName, StringComparison.OrdinalIgnoreCase))
+				{
+					stepType = parsingState.CurrentScenario.Steps[parsingState.CurrentScenario.Steps.Count - 1].Type;
+				}
+				else
+				{
+					stepType = (StepType)Enum.Parse(typeof(StepType), line.Substring(0, seperatorIndex), true);
+				}
+
+				Scenario scenario = parsingState.CurrentScenario;
+
+				var step = new Step() { Type = stepType, Text = line.Substring(seperatorIndex).Trim() };
+				scenario.Steps.Add(step);
+				parsingState.CurrentStep = step;
+			}
+		}
+
+		private class CommentParser : ISectionParser
+		{
+			public string[] LinePrefixes { get { return new[] { "#" }; } }
+
+			public void Parse(string line, ParsingState parsingState)
+			{
+				// No-op
+			}
+		}
+
+		private class TagParser : ISectionParser
+		{
+			public string[] LinePrefixes { get { return new[] { "@" }; } }
+
+			public void Parse(string line, ParsingState parsingState)
+			{
+				var tags = new List<string>();
+
+				foreach (string tag in line.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries))
+				{
+					tags.Add(tag.Trim());
+				}
+
+				parsingState.CurrentTags = tags;
+			}
+		}
+
+		private class FreeTextParser : ISectionParser
+		{
+			public string[] LinePrefixes { get { return new[] { string.Empty }; } }
+
+			public void Parse(string line, ParsingState parsingState)
+			{
+				if (!string.IsNullOrWhiteSpace(parsingState.Feature.Description))
+				{
+					parsingState.Feature.Description += Environment.NewLine;
+				}
+
+				parsingState.Feature.Description += line.Trim();
+			}
 		}
 	}
 }

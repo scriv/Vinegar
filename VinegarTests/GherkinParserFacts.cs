@@ -266,7 +266,7 @@ I want to write a test"));
 			}
 
 			[Test]
-			public void Parses_all_steps()
+			public void Parses_all_step_types_together()
 			{
 				// Arrange
 				string featureText = @"Feature: Test
@@ -293,6 +293,33 @@ I want to write a test"));
 
 				Assert.That(scenario.Steps[2].Type, Is.EqualTo(StepType.Then));
 				Assert.That(scenario.Steps[2].Text, Is.EqualTo("The test should pass"));
+			}
+
+			[Test]
+			public void Parses_multiple_scenarios()
+			{
+				// Arrange
+				string featureText = @"Feature: Test
+
+									   Scenario: Test Scenario 1
+											Given I have the first test
+											When I assert
+											Then It should be unique
+
+									   Scenario: Test Scenario 2
+											Given I have the second test
+											When I assert
+											Then It should be unique";
+				var parser = new GherkinParser();
+
+				// Act
+				Feature feature;
+				bool parseSuccess = parser.TryParse(featureText, out feature);
+
+				// Assert
+				Assert.That(feature.Scenarios.Count, Is.EqualTo(2));
+				Assert.That(feature.Scenarios[0].Title == "Test Scenario 1");
+				Assert.That(feature.Scenarios[1].Title == "Test Scenario 2");
 			}
 		}
     }

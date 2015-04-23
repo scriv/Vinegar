@@ -2,7 +2,7 @@
 
 namespace Vinegar
 {
-	[DebuggerDisplay("{Text}")]
+	[DebuggerDisplay("{Type} {Text}")]
 	public class Step
 	{
 		public string Text { get; set; }

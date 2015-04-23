@@ -29,6 +29,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="SharpSvn">
       <HintPath>..\packages\SharpSvn.1.8-x64.1.8013.3576.94\lib\net40\SharpSvn.dll</HintPath>
@@ -48,7 +51,6 @@
     <Compile Include="Feature.cs" />
     <Compile Include="FeatureRun.cs" />
     <Compile Include="GherkinParser.cs" />
-    <Compile Include="GherkinParserException.cs" />
     <Compile Include="IFeatureProvider.cs" />
     <Compile Include="IFeatureRunner.cs" />
     <Compile Include="Impl\FileSystemFeatureProvider.cs" />

@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace Vinegar
 {
-	[DebuggerDisplay("{Title} ({Steps.Count} steps)")]
+	[DebuggerDisplay("Scenario: {Title}")]
 	public class Scenario : ITaggable
 	{
 		public Scenario()

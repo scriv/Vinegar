@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace Vinegar
 {
-	[DebuggerDisplay("{Title} ({Scenarios.Count} Scenarios)")]
+	[DebuggerDisplay("Feature: {Title}")]
 	public class Feature
 	{
 		public Feature()
