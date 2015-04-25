@@ -48,6 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTable.cs" />
+    <Compile Include="DataTableRow.cs" />
     <Compile Include="Feature.cs" />
     <Compile Include="FeatureRun.cs" />
     <Compile Include="GherkinParser.cs" />

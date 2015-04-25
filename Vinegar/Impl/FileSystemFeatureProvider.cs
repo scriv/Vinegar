@@ -6,14 +6,10 @@ using System.Threading.Tasks;
 
 namespace Vinegar.Impl
 {
-	public class FileSystemFeatureProvider
+	public class FileSystemFeatureProvider : IFeatureProvider
 	{
 		private readonly GherkinParser m_parser = new GherkinParser();
 		private readonly DirectoryInfo m_workingDirectory = new DirectoryInfo(@"C:\temp\");
-
-		public FileSystemFeatureProvider()
-		{
-		}
 
 		public Task<bool> Save(Feature feature, IProgress<int> progress)
 		{

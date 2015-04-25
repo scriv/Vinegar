@@ -1,25 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Vinegar
 {
-	public class GherkinParser
+	/// <summary>
+	/// Parses Gherkin language text.
+	/// </summary>
+	public sealed class GherkinParser
 	{
-		private readonly ISectionParser[] m_parsers;
+		private readonly ISyntaxParser[] m_parsers;
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="GherkinParser"/> class.
+		/// </summary>
 		public GherkinParser()
 		{
-			m_parsers = new ISectionParser[]
+			m_parsers = new ISyntaxParser[]
 			{ 
 				new CommentParser(), 
 				new TagParser(), 
 				new FeatureParser(), 
 				new ScenarioParser(), 
-				new StepParser(), 
+				new StepParser(),
+				new DataTableParser(),
 				new FreeTextParser()
 			};
 		}
 
+		/// <summary>
+		/// Converts Gherkin language text to its <see cref="Feature"/> equivalent. A return value indicates whether the operation succeeded.
+		/// </summary>
+		/// <param name="featureText">The feature text.</param>
+		/// <param name="feature">The feature.</param>
+		/// <returns><c>true</c> if the parse succeeded; otherwise, <c>false</c>.</returns>
 		public bool TryParse(string featureText, out Feature feature)
 		{
 			var state = new ParsingState();
@@ -29,7 +43,7 @@ namespace Vinegar
 			{
 				string trimmedLine = line.TrimStart();
 
-				foreach (ISectionParser parser in m_parsers)
+				foreach (ISyntaxParser parser in m_parsers)
 				{
 					bool parsed = false;
 
@@ -61,13 +75,28 @@ namespace Vinegar
 			public IList<string> CurrentTags { get; set; }
 		}
 
-		private interface ISectionParser
+		/// <summary>
+		/// Defines the parser behaviour for lines of Gherkin syntax.
+		/// </summary>
+		private interface ISyntaxParser
 		{
+			/// <summary>
+			/// Gets the line prefixes that this parser should handle.
+			/// </summary>
+			/// <value>
+			/// The line prefixes.
+			/// </value>
 			string[] LinePrefixes { get; }
+
+			/// <summary>
+			/// Parses the specified line.
+			/// </summary>
+			/// <param name="line">The line.</param>
+			/// <param name="parsingState">State of the parsing.</param>
 			void Parse(string line, ParsingState parsingState);
 		}
 
-		private class FeatureParser : ISectionParser
+		private class FeatureParser : ISyntaxParser
 		{
 			public string[] LinePrefixes { get { return new[] { "Feature:" }; } }
 
@@ -79,7 +108,7 @@ namespace Vinegar
 			}
 		}
 
-		private class ScenarioParser : ISectionParser
+		private class ScenarioParser : ISyntaxParser
 		{
 			public string[] LinePrefixes { get { return new[] { "Scenario:" }; } }
 
@@ -94,7 +123,7 @@ namespace Vinegar
 			}
 		}
 
-		private class StepParser : ISectionParser
+		private class StepParser : ISyntaxParser
 		{
 			private const string andStepName = "And";
 
@@ -122,7 +151,7 @@ namespace Vinegar
 			}
 		}
 
-		private class CommentParser : ISectionParser
+		private class CommentParser : ISyntaxParser
 		{
 			public string[] LinePrefixes { get { return new[] { "#" }; } }
 
@@ -132,7 +161,7 @@ namespace Vinegar
 			}
 		}
 
-		private class TagParser : ISectionParser
+		private class TagParser : ISyntaxParser
 		{
 			public string[] LinePrefixes { get { return new[] { "@" }; } }
 
@@ -149,7 +178,7 @@ namespace Vinegar
 			}
 		}
 
-		private class FreeTextParser : ISectionParser
+		private class FreeTextParser : ISyntaxParser
 		{
 			public string[] LinePrefixes { get { return new[] { string.Empty }; } }
 
@@ -161,6 +190,37 @@ namespace Vinegar
 				}
 
 				parsingState.Feature.Description += line.Trim();
+			}
+		}
+
+		private class DataTableParser : ISyntaxParser
+		{
+			public string[] LinePrefixes { get { return new[] { "|" }; } }
+
+			public void Parse(string line, ParsingState parsingState)
+			{
+				if (parsingState.CurrentStep.DataTable == null)
+				{
+					parsingState.CurrentStep.DataTable = new DataTable();
+					parsingState.CurrentStep.DataTable.Headers = ParseRow(line);
+				}
+				else
+				{
+					DataTableRow row = new DataTableRow(parsingState.CurrentStep.DataTable) { Cells = ParseRow(line) };
+					parsingState.CurrentStep.DataTable.Rows.Add(row);
+				}
+			}
+
+			private static IList<string> ParseRow(string line)
+			{
+				var headers = new List<string>();
+
+				foreach (string header in line.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries))
+				{
+					headers.Add(header.Trim());
+				}
+
+				return headers;
 			}
 		}
 	}

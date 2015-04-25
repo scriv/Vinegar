@@ -7,5 +7,7 @@ namespace Vinegar
 	{
 		public string Text { get; set; }
 		public StepType Type { get; set; }
+
+		public DataTable DataTable { get; set; }
 	}
 }
