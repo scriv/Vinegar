@@ -1,0 +1,32 @@
+﻿<Window x:Class="Vinegar.Ide.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:vc="clr-namespace:Vinegar.Ide.Controls"
+		xmlns:interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+		Style="{StaticResource Window}"
+        Title="Vinegar">
+	<interactivity:Interaction.Triggers>
+		<interactivity:EventTrigger EventName="Loaded">
+			<interactivity:InvokeCommandAction Command="{Binding LoadLibrariesCommand}"/>
+		</interactivity:EventTrigger>
+	</interactivity:Interaction.Triggers>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="250"/>
+			<ColumnDefinition/>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<Border Grid.ColumnSpan="2" Padding="10">
+			<StackPanel Orientation="Horizontal">
+				<TextBlock Style="{StaticResource Header}" Text="Vinegar"/>
+			</StackPanel>
+		</Border>
+		<vc:LibraryMenu Grid.Row="1" DataContext="{Binding Library}" />
+		<StatusBar Grid.Row="2" Grid.ColumnSpan="2">
+		</StatusBar>
+	</Grid>
+</Window>

@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading.Tasks;
 
 namespace Vinegar.Impl
 {
+	[Export(typeof(IFeatureProvider))]
 	public class FileSystemFeatureProvider : IFeatureProvider
 	{
 		private readonly GherkinParser m_parser = new GherkinParser();
 		private readonly DirectoryInfo m_workingDirectory = new DirectoryInfo(@"C:\temp\");
+
+		public string Name { get { return "File System"; } }
 
 		public Task<bool> Save(Feature feature, IProgress<int> progress)
 		{

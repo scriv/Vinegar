@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using SharpSvn;
 
 namespace Vinegar.Impl
 {
+	//Export(typeof(IFeatureProvider))]
 	public class SvnFeatureProvider : IFeatureProvider
 	{
 		private SvnTarget m_target;
@@ -18,6 +20,8 @@ namespace Vinegar.Impl
 		{
 			m_target = SvnTarget.FromString("https://svn.starrez.com");
 		}
+
+		public string Name { get { return "Subversion"; } }
 
 		public Task<bool> Save(Feature feature, IProgress<int> progress)
 		{

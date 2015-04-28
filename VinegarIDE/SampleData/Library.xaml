@@ -1,0 +1,15 @@
+﻿<vm:LibrarySourceViewModel xmlns:vm="clr-namespace:Vinegar.Ide.ViewModels" xmlns:v="clr-namespace:Vinegar;assembly=Vinegar" Name="Sample Library">
+	<vm:LibrarySourceViewModel.Features>
+		<v:Feature Title="Login">
+			<v:Feature.Scenarios>
+				<v:Scenario Title="Display a generic error if the password is incorrect" />
+				<v:Scenario Title="Go to the main page after a successful login" />
+			</v:Feature.Scenarios>
+		</v:Feature>
+		<v:Feature Title="Dashboard">
+			<v:Feature.Scenarios>
+				<v:Scenario Title="Secure a panel" />
+			</v:Feature.Scenarios>
+		</v:Feature>
+	</vm:LibrarySourceViewModel.Features>
+</vm:LibrarySourceViewModel>

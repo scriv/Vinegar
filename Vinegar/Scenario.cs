@@ -12,7 +12,7 @@ namespace Vinegar
 		}
 
 		public string Title { get; set; }
-		public IList<string> Tags { get; set; }
-		public IList<Step> Steps { get; set; } 
+		public List<string> Tags { get; set; }
+		public List<Step> Steps { get; set; } 
 	}
 }

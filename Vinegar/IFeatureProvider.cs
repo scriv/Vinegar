@@ -8,6 +8,7 @@ namespace Vinegar
 {
     public interface IFeatureProvider
     {
+		string Name { get; }
 		Task<bool> Save(Feature feature, IProgress<int> progress);
 		Task<IEnumerable<Feature>> GetFeatures(IProgress<string> progress);
     }

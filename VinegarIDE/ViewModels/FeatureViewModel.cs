@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vinegar
+namespace Vinegar.Ide.ViewModels
 {
-	public interface ITaggable
+	public class FeatureViewModel
 	{
-		List<string> Tags { get; set; }
 	}
 }

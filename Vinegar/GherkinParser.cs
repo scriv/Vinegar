@@ -72,7 +72,7 @@ namespace Vinegar
 			public Feature Feature { get; set; }
 			public Scenario CurrentScenario { get; set; }
 			public Step CurrentStep { get; set; }
-			public IList<string> CurrentTags { get; set; }
+			public List<string> CurrentTags { get; set; }
 		}
 
 		/// <summary>
@@ -151,20 +151,48 @@ namespace Vinegar
 			}
 		}
 
+		/// <summary>
+		/// Parses comment lines (lines that start with #).
+		/// </summary>
 		private class CommentParser : ISyntaxParser
 		{
+			/// <summary>
+			/// Gets the line prefixes that this parser should handle.
+			/// </summary>
+			/// <value>
+			/// The line prefixes.
+			/// </value>
 			public string[] LinePrefixes { get { return new[] { "#" }; } }
 
+			/// <summary>
+			/// Parses the specified line.
+			/// </summary>
+			/// <param name="line">The line.</param>
+			/// <param name="parsingState">State of the parsing.</param>
 			public void Parse(string line, ParsingState parsingState)
 			{
 				// No-op
 			}
 		}
 
+		/// <summary>
+		/// Parses tags (@tag1 @tag2) proceeding features and steps.
+		/// </summary>
 		private class TagParser : ISyntaxParser
 		{
+			/// <summary>
+			/// Gets the line prefixes that this parser should handle.
+			/// </summary>
+			/// <value>
+			/// The line prefixes.
+			/// </value>
 			public string[] LinePrefixes { get { return new[] { "@" }; } }
 
+			/// <summary>
+			/// Parses the specified line.
+			/// </summary>
+			/// <param name="line">The line.</param>
+			/// <param name="parsingState">State of the parsing.</param>
 			public void Parse(string line, ParsingState parsingState)
 			{
 				var tags = new List<string>();

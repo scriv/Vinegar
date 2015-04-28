@@ -13,10 +13,10 @@ namespace Vinegar
 			this.Description = string.Empty;
 		}
 
-		public IList<string> Tags { get; set; }
+		public List<string> Tags { get; set; }
 		public string Title { get; set; }
 		public string Description { get; set; }
 		public string Background { get; set; }
-		public IList<Scenario> Scenarios { get; set; }
+		public List<Scenario> Scenarios { get; set; }
 	}
 }
