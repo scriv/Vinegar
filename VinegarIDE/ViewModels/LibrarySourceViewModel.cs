@@ -17,6 +17,10 @@ namespace Vinegar.Ide.ViewModels
 		private readonly ICommand m_selectScenarioCommand;
 		private readonly IMessenger m_messenger;
 
+		public LibrarySourceViewModel()
+		{
+		}
+
 		[ImportingConstructor]
 		public LibrarySourceViewModel(IMessenger messenger)
 		{

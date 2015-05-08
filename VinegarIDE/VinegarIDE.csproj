@@ -87,6 +87,7 @@
     <Compile Include="Controls\Step.xaml.cs">
       <DependentUpon>Step.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\StepTypeConverter.cs" />
     <Compile Include="Messaging\Messenger.cs" />
     <Compile Include="ViewModels\EnvironmentViewModel.cs" />
     <Compile Include="ViewModels\FeatureViewModel.cs" />
