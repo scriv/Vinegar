@@ -1,0 +1,11 @@
+﻿<vm:ScenarioViewModel xmlns:vm="clr-namespace:Vinegar.Ide.ViewModels">
+	<vm:ScenarioViewModel.Scenario>
+		<v:Scenario xmlns:v="clr-namespace:Vinegar;assembly=Vinegar" Title="Display a generic error if the password is incorrect">
+			<v:Scenario.Steps>
+				<v:Step Type="Given" Text="I browse to the login page" />
+				<v:Step Type="When" Text="I enter invalid credentials" />
+				<v:Step Type="Then" Text="Then a &quot;Invalid credentials&quot; message is displayed" />
+			</v:Scenario.Steps>
+		</v:Scenario>
+	</vm:ScenarioViewModel.Scenario>
+</vm:ScenarioViewModel>

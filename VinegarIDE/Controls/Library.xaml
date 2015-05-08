@@ -5,16 +5,22 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 			 xmlns:v="clr-namespace:Vinegar;assembly=Vinegar"
 			 xmlns:vm="clr-namespace:Vinegar.Ide.ViewModels"
+			 xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
 			 d:DataContext="{d:DesignData Source=./SampleData/Library.xaml}">
-	<Grid>
+	<Grid VerticalAlignment="Stretch" Height="Auto">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition />
 		</Grid.RowDefinitions>
 		<TextBlock Grid.Row="0" Text="{Binding Name}" Style="{StaticResource LibraryHeader}" />
-		<TreeView Grid.Row="1" ItemsSource="{Binding Features}">
+		<TreeView Grid.Row="1" x:Name="FeatureTreeView" ItemsSource="{Binding Features}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+			<i:Interaction.Triggers>
+				<i:EventTrigger EventName="SelectedItemChanged">
+					<i:InvokeCommandAction Command="{Binding SelectScenarioCommand}" CommandParameter="{Binding ElementName=FeatureTreeView, Path=SelectedItem}" />
+				</i:EventTrigger>
+			</i:Interaction.Triggers>
 			<TreeView.Resources>
 				<HierarchicalDataTemplate DataType="{x:Type v:Feature}" ItemsSource="{Binding Scenarios}">
 					<TextBlock Text="{Binding Title}" Foreground="Black"/>

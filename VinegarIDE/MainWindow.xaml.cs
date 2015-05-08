@@ -23,18 +23,23 @@ namespace Vinegar.Ide
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		public MainWindow()
-		{
-			InitializeComponent();
+		public static readonly CompositionContainer Container;
 
+		static MainWindow()
+		{
 			var catalog = new AggregateCatalog(
 				new AssemblyCatalog(typeof(Feature).Assembly),
 				new AssemblyCatalog(typeof(MainWindow).Assembly)
 				);
 
-			var container = new CompositionContainer(catalog);
+			Container = new CompositionContainer(catalog);
+		}
 
-			this.DataContext = container.GetExport<EnvironmentViewModel>().Value;
+		public MainWindow()
+		{
+			InitializeComponent();
+			
+			this.DataContext = Container.GetExport<EnvironmentViewModel>().Value;
 		}
 	}
 }

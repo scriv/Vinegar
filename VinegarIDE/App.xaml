@@ -6,16 +6,15 @@
 			xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="Vinegar.App"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-    	<!--<SampleData:SampleDataSource x:Key="SampleDataSource" d:IsDataSource="True"/>-->
 		<Style x:Key="Window" TargetType="{x:Type Window}">
-			<Setter Property="Background" Value="#333"/>
+			<!--<Setter Property="Background" Value="#333"/>-->
 		</Style>
-		<Style TargetType="{x:Type ListView}">
+		<!--<Style TargetType="{x:Type ListView}">
 			<Setter Property="Background" Value="#333"/>
 		</Style>
 		<Style TargetType="{x:Type TextBlock}">
 			<Setter Property="Foreground" Value="White"/>
-		</Style>
+		</Style>-->
 		<Style x:Key="Header" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
 			<Setter Property="FontSize" Value="28"/>
 		</Style>
@@ -25,8 +24,16 @@
 		<Style x:Key="LibraryHeader" TargetType="TextBlock">
 			<Setter Property="Padding" Value="5"/>
 			<Setter Property="FontSize" Value="18"/>
-			<Setter Property="Background" Value="#333"/>
-			<Setter Property="Foreground" Value="White"/>
+			<!--<Setter Property="Background" Value="#333"/>
+			<Setter Property="Foreground" Value="White"/>-->
+		</Style>
+		<Style x:Key="ScenarioTitle" TargetType="TextBlock">
+			<Setter Property="FontWeight" Value="Bold"/>
+			<Setter Property="Margin" Value="0 6 0 6"/>
+		</Style>
+		<Style x:Key="StepType" TargetType="TextBlock">
+			<Setter Property="Margin" Value="0 0 6 0"/>
+			<Setter Property="FontWeight" Value="Bold"/>
 		</Style>
     </Application.Resources>
 </Application>
