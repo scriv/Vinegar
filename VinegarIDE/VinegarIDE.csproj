@@ -78,6 +78,9 @@
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Commands\IAsyncCommand.cs" />
     <Compile Include="Commands\IRaiseCanExecuteChanged.cs" />
+    <Compile Include="Controls\DataTable.xaml.cs">
+      <DependentUpon>DataTable.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\LibraryMenu.xaml.cs">
       <DependentUpon>LibraryMenu.xaml</DependentUpon>
     </Compile>
@@ -87,13 +90,19 @@
     <Compile Include="Controls\Step.xaml.cs">
       <DependentUpon>Step.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\DataTableToListConverter.cs" />
     <Compile Include="Converters\StepTypeConverter.cs" />
+    <Compile Include="Converters\VisibilityConverter.cs" />
     <Compile Include="Messaging\Messenger.cs" />
     <Compile Include="ViewModels\EnvironmentViewModel.cs" />
     <Compile Include="ViewModels\FeatureViewModel.cs" />
     <Compile Include="ViewModels\LibrarySourceViewModel.cs" />
     <Compile Include="ViewModels\ScenarioViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Page Include="Controls\DataTable.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Library.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -129,6 +138,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </DesignDataWithDesignTimeCreatableTypes>
+    <Page Include="SampleData\DataTable.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SampleData\Scenario.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

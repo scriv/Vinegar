@@ -4,6 +4,7 @@
 		xmlns:vc="clr-namespace:Vinegar.Ide.Controls"
 		xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
 		Style="{StaticResource Window}"
+		FontSize="14"
         Title="Vinegar">
 	<i:Interaction.Triggers>
 		<i:EventTrigger EventName="Loaded">

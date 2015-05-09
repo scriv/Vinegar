@@ -239,7 +239,7 @@ namespace Vinegar
 				}
 			}
 
-			private static IList<string> ParseRow(string line)
+			private static List<string> ParseRow(string line)
 			{
 				var headers = new List<string>();
 

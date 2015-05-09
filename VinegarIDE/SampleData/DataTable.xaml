@@ -1,0 +1,20 @@
+﻿<v:DataTable xmlns:v="clr-namespace:Vinegar;assembly=Vinegar" xmlns:r="clr-namespace:System;assembly=mscorlib">
+	<v:DataTable.Headers>
+		<r:String>Field</r:String>
+		<r:String>Value</r:String>
+	</v:DataTable.Headers>
+	<v:DataTable.Rows>
+		<v:DataTableRow>
+			<v:DataTableRow.Cells>
+				<r:String>Description</r:String>
+				<r:String>Indulgent cookies baked using an exclusive recipe</r:String>
+			</v:DataTableRow.Cells>
+		</v:DataTableRow>
+		<v:DataTableRow>
+			<v:DataTableRow.Cells>
+				<r:String>Price</r:String>
+				<r:String>5</r:String>
+			</v:DataTableRow.Cells>
+		</v:DataTableRow>
+	</v:DataTable.Rows>
+</v:DataTable>

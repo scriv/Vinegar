@@ -28,12 +28,16 @@
 			<Setter Property="Foreground" Value="White"/>-->
 		</Style>
 		<Style x:Key="ScenarioTitle" TargetType="TextBlock">
-			<Setter Property="FontWeight" Value="Bold"/>
 			<Setter Property="Margin" Value="0 6 0 6"/>
+			
+			<Setter Property="FontSize" Value="16"/>
+		</Style>
+		<Style x:Key="ScenarioTitlePrefix" TargetType="TextBlock" BasedOn="{StaticResource ScenarioTitle}">
+			<Setter Property="Foreground" Value="Blue"/>
 		</Style>
 		<Style x:Key="StepType" TargetType="TextBlock">
 			<Setter Property="Margin" Value="0 0 6 0"/>
-			<Setter Property="FontWeight" Value="Bold"/>
+			<Setter Property="Foreground" Value="Blue"/>
 		</Style>
     </Application.Resources>
 </Application>

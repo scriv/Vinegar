@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Vinegar
 {
-	public class DataTable
+	public class DataTable : IEnumerable<DataTableRow>
 	{
 		public DataTable()
 		{
@@ -11,9 +12,9 @@ namespace Vinegar
 			this.Rows = new List<DataTableRow>();
 		}
 
-		public IList<string> Headers { get; set; }
+		public List<string> Headers { get; set; }
 
-		public IList<DataTableRow> Rows { get; set; }
+		public List<DataTableRow> Rows { get; set; }
 
 		public override string ToString()
 		{
@@ -23,5 +24,23 @@ namespace Vinegar
 
 			return gherkinSyntax;
 		}
+
+		#region IEnumerable<DataTableRow> Members
+
+		public IEnumerator<DataTableRow> GetEnumerator()
+		{
+			return this.Rows.GetEnumerator();
+		}
+
+		#endregion
+
+		#region IEnumerable Members
+
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		{
+			return ((IEnumerable)this.Rows).GetEnumerator();
+		}
+
+		#endregion
 	}
 }

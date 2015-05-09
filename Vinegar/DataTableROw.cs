@@ -11,9 +11,14 @@ namespace Vinegar
 		private readonly DataTable m_table;
 
 		public DataTableRow(DataTable table)
+			: this()
 		{
 			m_table = table;
 			this.Cells = new List<string>();
+		}
+
+		public DataTableRow()
+		{
 		}
 
 		public string this[string header]
@@ -26,7 +31,7 @@ namespace Vinegar
 			}
 		}
 
-		public IList<string> Cells { get; set; }
+		public List<string> Cells { get; set; }
 
 		public override string ToString()
 		{
