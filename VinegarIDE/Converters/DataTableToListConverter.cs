@@ -128,11 +128,7 @@ namespace Vinegar.Ide.Converters
 
 				foreach (var cell in m_tableRow.Cells)
 				{
-					if (cellIndex < m_table.Headers.Count)
-					{
-						properties.Add(new RowProperty(m_table.Headers[cellIndex], m_table, m_tableRow));
-					}
-
+					properties.Add(new RowProperty(m_table.Headers[cellIndex], m_table, m_tableRow));
 					cellIndex++;
 				}
 

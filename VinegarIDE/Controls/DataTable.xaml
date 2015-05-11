@@ -11,6 +11,20 @@
 		<c:DataTableToListConverter x:Key="DataTableConverter" />
 		<c:VisibilityConverter x:Key="VisibilityConverter"/>
 	</UserControl.Resources>
-	<DataGrid Width="Auto" CanUserSortColumns="False" Margin="12 6 0 12" ItemsSource="{Binding ., Converter={StaticResource DataTableConverter}}" Visibility="{Binding ., Converter={StaticResource VisibilityConverter}}">	
+	<DataGrid Width="Auto" CanUserSortColumns="False" Margin="12 6 0 12" ItemsSource="{Binding ., Converter={StaticResource DataTableConverter}}" Visibility="{Binding ., Converter={StaticResource VisibilityConverter}}">
+		<DataGrid.CellStyle>
+			<Style TargetType="DataGridCell">
+				<Setter Property="Padding" Value="3"/>
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate TargetType="{x:Type DataGridCell}">
+							<Border Padding="{TemplateBinding Padding}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+								<ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+							</Border>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+		</DataGrid.CellStyle>
 	</DataGrid>
 </UserControl>

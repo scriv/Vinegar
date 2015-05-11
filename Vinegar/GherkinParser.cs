@@ -241,14 +241,17 @@ namespace Vinegar
 
 			private static List<string> ParseRow(string line)
 			{
-				var headers = new List<string>();
+				var cells = new List<string>();
 
-				foreach (string header in line.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries))
+				foreach (string cell in line.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries))
 				{
-					headers.Add(header.Trim());
+					if (!string.IsNullOrWhiteSpace(cell))
+					{
+						cells.Add(cell.Trim());
+					}
 				}
 
-				return headers;
+				return cells;
 			}
 		}
 	}

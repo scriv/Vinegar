@@ -356,10 +356,54 @@ I want to write a test"));
 				// First row
 				Assert.That(table.Rows[0]["Field"], Is.EqualTo("Age"));
 				Assert.That(table.Rows[0]["Value"], Is.EqualTo("29"));
+				Assert.That(table.Rows[0].Cells.Count, Is.EqualTo(2));
 
 				// Second row
 				Assert.That(table.Rows[1]["Field"], Is.EqualTo("Name"));
 				Assert.That(table.Rows[1]["Value"], Is.EqualTo("Scriv"));
+				Assert.That(table.Rows[1].Cells.Count, Is.EqualTo(2));
+			}
+
+			[Test]
+			public void Parses_DataTable_WithTrailingWhitespace()
+			{
+				// Arrange
+				string featureText = @"Feature: Test
+
+									   Scenario: Test Scenario 1
+											Given I have a test
+											When I assert
+											Then It should have a data table:
+												| Field | Value |
+												| Age   | 29    |
+												| Name  | Scriv | 
+";
+				var parser = new GherkinParser();
+
+				// Act
+				Feature feature;
+				bool parseSuccess = parser.TryParse(featureText, out feature);
+
+				// Assert
+				DataTable table = feature.Scenarios.Last().Steps.Last().DataTable;
+
+				Assert.That(table, Is.Not.Null);
+
+				// Headers
+				Assert.That(table.Headers.Count, Is.EqualTo(2));
+				Assert.That(table.Headers[0], Is.EqualTo("Field"));
+				Assert.That(table.Headers[1], Is.EqualTo("Value"));
+				Assert.That(table.Rows.Count, Is.EqualTo(2));
+
+				// First row
+				Assert.That(table.Rows[0]["Field"], Is.EqualTo("Age"));
+				Assert.That(table.Rows[0]["Value"], Is.EqualTo("29"));
+				Assert.That(table.Rows[0].Cells.Count, Is.EqualTo(2));
+
+				// Second row
+				Assert.That(table.Rows[1]["Field"], Is.EqualTo("Name"));
+				Assert.That(table.Rows[1]["Value"], Is.EqualTo("Scriv"));
+				Assert.That(table.Rows[1].Cells.Count, Is.EqualTo(2));
 			}
 		}
     }
