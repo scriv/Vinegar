@@ -6,22 +6,13 @@ using Vinegar.Ide.Commands;
 
 namespace Vinegar.Ide.ViewModels
 {
-	[Export(typeof(ScenarioViewModel))]
+	[Export]
 	public class ScenarioViewModel : ViewModelBase
 	{
 		private Scenario m_scenario;
 
 		public ScenarioViewModel()
 		{
-		}
-
-		[ImportingConstructor]
-		public ScenarioViewModel(IMessenger messenger)
-		{
-			messenger.Register<Scenario>(this, s =>
-				{
-					this.Scenario = s;
-				});
 		}
 
 		public Scenario Scenario

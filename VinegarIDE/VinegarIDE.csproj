@@ -87,16 +87,27 @@
     <Compile Include="Controls\Scenario.xaml.cs">
       <DependentUpon>Scenario.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ScenarioContainer.xaml.cs">
+      <DependentUpon>ScenarioContainer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Step.xaml.cs">
       <DependentUpon>Step.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\StepManipulator.xaml.cs">
+      <DependentUpon>StepManipulator.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\StepSelector.xaml.cs">
+      <DependentUpon>StepSelector.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\DataTableToListConverter.cs" />
     <Compile Include="Converters\StepTypeConverter.cs" />
     <Compile Include="Converters\VisibilityConverter.cs" />
     <Compile Include="Messaging\Messenger.cs" />
+    <Compile Include="Services\StepManipulationService.cs" />
     <Compile Include="ViewModels\EnvironmentViewModel.cs" />
     <Compile Include="ViewModels\FeatureViewModel.cs" />
     <Compile Include="ViewModels\LibrarySourceViewModel.cs" />
+    <Compile Include="ViewModels\ScenarioContainerViewModel.cs" />
     <Compile Include="ViewModels\ScenarioViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Page Include="Controls\DataTable.xaml">
@@ -115,7 +126,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\ScenarioContainer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Step.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\StepManipulator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\StepSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -180,6 +203,9 @@
       <Project>{C81EA4A4-B754-4AC0-861F-16E634063345}</Project>
       <Name>Vinegar</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Support\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

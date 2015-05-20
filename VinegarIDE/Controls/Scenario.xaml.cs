@@ -12,7 +12,7 @@ namespace Vinegar.Ide.Controls
 		{
 			InitializeComponent();
 
-			this.DataContext = MainWindow.Container.GetExport<ScenarioViewModel>().Value;
+			//this.DataContext = MainWindow.Container.GetExport<ScenarioViewModel>().Value;
 		}
 	}
 }

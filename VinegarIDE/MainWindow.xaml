@@ -26,6 +26,6 @@
 			</StatusBarItem>
 		</StatusBar>
 		<vc:LibraryMenu DockPanel.Dock="Left" DataContext="{Binding Library}" />
-		<vc:Scenario />
+		<vc:ScenarioContainer/>
 	</DockPanel>
 </Window>
